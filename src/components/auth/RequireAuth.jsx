@@ -1,0 +1,18 @@
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from 'context/AuthContext';
+import AuthLoadingScreen from 'components/auth/AuthLoadingScreen';
+
+export default function RequireAuth() {
+  const { isAuthenticated, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return <AuthLoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return <Outlet />;
+}
